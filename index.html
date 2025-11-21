@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-SABER MAYA ✨ (8 Años)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Chivo:wght@400;700;900&display=swap');
+        
+        * {
+            font-family: 'Fredoka', sans-serif;
+        }
+        
+        /* --- NUEVA PALETA DE COLORES Y FONDO --- */
+        
+        /* Colores: Esmeralda (#00A36C), Azul Profundo (#124F8A), Arena (#F5DEB3), Oro (#FFD700) */
+        
+        body {
+            /* Degradado de Selva y Cielo Nocturno */
+            background: linear-gradient(135deg, #00A36C 0%, #008053 40%, #124F8A 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .main-card {
+            /* Textura de Piedra Clara / Arena */
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border: 5px solid #00A36C; /* Borde Esmeralda */
+            box-shadow: 
+                0 0 30px rgba(18, 79, 138, 0.4), /* Sombra Azul */
+                0 0 60px rgba(0, 163, 108, 0.3), /* Sombra Esmeralda */
+                0 15px 40px rgba(0, 0, 0, 0.3);
+            max-width: 95%;
+            width: 550px;
+            border-radius: 20px;
+            animation: none; /* Quitamos el heartbeat */
+        }
+        
+        .title-main {
+            font-family: 'Chivo', sans-serif;
+            font-size: 3.5rem;
+            /* Degradado de Oro a Verde */
+            background: linear-gradient(135deg, #FFD700, #00A36C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 0px rgba(18, 79, 138, 0.3);
+            letter-spacing: 2px;
+            animation: pulse-slow 5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            }
+        
+        .game-button {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 1rem 1.5rem;
+            border: 4px solid;
+            border-radius: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4); /* Sombra de profundidad de piedra */
+            position: relative;
+            top: 0;
+            animation: none; /* Quitamos el float */
+        }
+        
+        .game-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.4);
+        }
+        
+        .game-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Botones Temáticos */
+        .btn-green-jungle {
+            background: linear-gradient(135deg, #00A36C, #008053);
+            color: #F5DEB3; /* Texto color Arena */
+            border-color: #008053;
+        }
+        
+        .btn-blue-deep {
+            background: linear-gradient(135deg, #124F8A, #0A3761);
+            color: #F5DEB3; 
+            border-color: #0A3761;
+            font-weight: 700;
+        }
+        
+        .btn-gold-sand {
+            background: linear-gradient(135deg, #FFD700, #E0B500);
+            color: #124F8A; /* Texto color Azul Profundo */
+            border-color: #E0B500;
+            font-weight: 900;
+        }
+        
+        .option-tile {
+            /* Fondo de la Runa */
+            background: #F5DEB3; /* Color Arena */
+            border: 4px solid #124F8A; /* Borde Azul Profundo */
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #00A36C; /* Texto Esmeralda */
+            box-shadow: 0 4px 0 rgba(18, 79, 138, 0.5);
+        }
+        
+        .option-tile:hover {
+            transform: translateY(-3px);
+            background: #FFD700; /* Se ilumina a Dorado */
+            color: #124F8A;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        
+        .option-tile:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 0 rgba(18, 79, 138, 0.5);
+        }
+        
+        .correct-answer {
+            /* Runa Activada */
+            background: linear-gradient(135deg, #FFD700, #E0B500) !important;
+            border-color: #124F8A !important;
+            color: #124F8A !important;
+            transform: scale(1.08) !important;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 1) !important;
+            animation: sparkle 0.6s ease-out;
+        }
+        
+        .incorrect-answer {
+            background: linear-gradient(135deg, #124F8A, #0A3761) !important;
+            border-color: #FFD700 !important;
+            color: white !important;
+            opacity: 0.8 !important;
+            animation: shake 0.4s;
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, #FFD700, #E0B500);
+            color: #124F8A;
+            font-weight: 800;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            display: inline-block;
+            box-shadow: 0 4px 0 rgba(18, 79, 138, 0.2);
+        }
+        
+        .score-badge {
+            background: linear-gradient(135deg, #124F8A, #0A3761);
+            color: #FFD700;
+            font-weight: 800;
+            padding: 0.7rem 1.5rem;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            box-shadow: 0 0 15px rgba(18, 79, 138, 0.6);
+        }
+        
+        .display-content {
+            /* Piedra Central de la Pregunta */
+            background: #F5DEB3; /* Color Arena */
+            border: 4px dashed #00A36C; /* Borde Esmeralda */
+            border-radius: 20px;
+            padding: 2rem;
+            font-size: 3.5rem; /* Más pequeño para texto */
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            animation: pulse 2s ease-in-out infinite;
+            color: #124F8A; /* Texto Azul Profundo */
+            font-weight: 900;
+        }
+        
+        /* Estilos de Mensajes (Modal) */
+        .message-content {
+            background: linear-gradient(135deg, #124F8A, #00A36C);
+            border: 5px solid #FFD700;
+            color: white;
+        }
+
+        /* Mensajes de feedback en pantalla */
+        .feedback-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-weight: 900;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .feedback-correct {
+            color: #124F8A;
+            background-color: #FFD700;
+            animation: popIn 0.5s ease-out forwards;
+        }
+        .feedback-incorrect {
+            color: #F5DEB3;
+            background-color: #0A3761;
+            animation: shake 0.5s forwards;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="app" class="app-container"></div>
+
+    <script type="module">
+        const app = document.getElementById('app');
+        let currentScreen = 'mainMenu';
+        let currentLevel = 1;
+        let score = 0;
+        let gameData = {};
+        
+        // --- Datos de los Juegos (Edición 8 Años) ---
+        
+        // Matemáticas: Multiplicación, División Simple, Fracciones y Valor Posicional hasta 1000
+        const MATH_QUESTIONS = [
+            // Nivel 1: Sumas/Restas hasta 100 y Valor Posicional (Centenas/Decenas/Unidades)
+            { type: 'value', number: 243, question: '¿Cuál es el valor de las CENTENAS en 243?', answer: 200, max: 300, level: 1 },
+            { type: 'value', number: 85, question: '¿Cuál es el valor de las UNIDADES en 85?', answer: 5, max: 10, level: 1 },
+            { type: 'sum', num1: 50, num2: 40, max: 100, level: 1 },
+            { type: 'sum', num1: 67, num2: 22, max: 100, level: 1 }, // Sin llevar
+            { type: 'subtract', num1: 95, num2: 40, max: 60, level: 1 },
+            { type: 'subtract', num1: 78, num2: 23, max: 60, level: 1 },
+            { type: 'value', number: 901, question: '¿Cuántas CENTENAS tiene el número 901?', answer: 9, max: 10, level: 1 },
+            { type: 'sum', num1: 35, num2: 61, max: 100, level: 1 },
+            { type: 'value', number: 156, question: '¿Cuál es el valor de las DECENAS en 156?', answer: 50, max: 60, level: 1 },
+            { type: 'subtract', num1: 89, num2: 14, max: 80, level: 1 },
+            { type: 'sum', num1: 71, num2: 28, max: 100, level: 1 },
+            { type: 'value', number: 333, question: '¿Cuántas UNIDADES tiene el número 333?', answer: 3, max: 10, level: 1 },
+            // MÁS CONTENIDO NIVEL 1
+            { type: 'sum', num1: 45, num2: 58, question: '¿Cuánto es 45 + 58?', answer: 103, max: 110, level: 1 }, // Suma con llevar
+            { type: 'subtract', num1: 100, num2: 35, question: '¿Cuánto es 100 - 35?', answer: 65, max: 70, level: 1 }, // Resta con prestar
+            { type: 'value', number: 681, question: '¿Cuál es el valor de las DECENAS en 681?', answer: 80, max: 90, level: 1 },
+            { type: 'sum', num1: 15, num2: 85, question: '¿Cuánto es 15 + 85?', answer: 100, max: 105, level: 1 },
+            { type: 'subtract', num1: 60, num2: 17, question: '¿Cuánto es 60 - 17?', answer: 43, max: 50, level: 1 },
+            { type: 'value', number: 777, question: '¿Cuántas CENTENAS tiene el número 777?', answer: 7, max: 10, level: 1 },
+            { type: 'sum', num1: 54, num2: 39, question: '¿Cuánto es 54 + 39?', answer: 93, max: 100, level: 1 },
+            { type: 'value', number: 1000, question: '¿Cuántas CENTENAS tiene 1000?', answer: 10, max: 11, level: 1 },
+            // EXPANSION NIVEL 1
+            { type: 'sum', num1: 125, num2: 75, question: '¿Cuánto es 125 + 75?', answer: 200, max: 210, level: 1 },
+            { type: 'subtract', num1: 150, num2: 50, question: '¿Cuánto es 150 - 50?', answer: 100, max: 110, level: 1 },
+            { type: 'value', number: 407, question: '¿Cuál es el valor de las UNIDADES en 407?', answer: 7, max: 10, level: 1 },
+            { type: 'sum', num1: 99, num2: 1, question: '¿Cuánto es 99 + 1?', answer: 100, max: 105, level: 1 },
+            { type: 'subtract', num1: 81, num2: 1, question: '¿Cuánto es 81 - 1?', answer: 80, max: 85, level: 1 },
+
+
+            // Nivel 2: Multiplicación (x2, x3, x5), División Simple (entre 2), Perímetro
+            { type: 'times', num1: 2, num2: 5, question: '¿Cuánto es 2 x 5?', answer: 10, max: 11, level: 2, display: '2 grupos de 5' },
+            { type: 'times', num1: 3, num2: 4, question: '¿Cuánto es 3 x 4?', answer: 12, max: 13, level: 2, display: '3 grupos de 4' },
+            { type: 'divide', num1: 10, num2: 2, question: '10 dividido entre 2 es:', answer: 5, max: 6, level: 2, display: '10 ÷ 2' },
+            { type: 'divide', num1: 9, num2: 3, question: '9 dividido entre 3 es:', answer: 3, max: 4, level: 2, display: '9 ÷ 3' },
+            { type: 'times', num1: 5, num2: 6, question: '¿Cuánto es 5 x 6?', answer: 30, max: 31, level: 2, display: '5 grupos de 6' },
+            { type: 'perimeter', sides: [3, 3, 3, 3], question: '¿Cuál es el PERÍMETRO de un cuadrado de lado 3?', answer: 12, max: 13, level: 2, display: 'Lados: 3, 3, 3, 3' },
+            { type: 'times', num1: 4, num2: 2, question: '¿Cuánto es 4 x 2?', answer: 8, max: 9, level: 2, display: '4 grupos de 2' },
+            { type: 'divide', num1: 15, num2: 5, question: '15 dividido entre 5 es:', answer: 3, max: 4, level: 2, display: '15 ÷ 5' },
+            { type: 'perimeter', sides: [5, 4, 5, 4], question: '¿Cuál es el PERÍMETRO de un rectángulo con lados 5 y 4?', answer: 18, max: 19, level: 2, display: 'Lados: 5, 4, 5, 4' },
+            { type: 'times', num1: 10, num2: 3, question: '¿Cuánto es 10 x 3?', answer: 30, max: 31, level: 2, display: '10 grupos de 3' },
+            { type: 'divide', num1: 16, num2: 2, question: '16 dividido entre 2 es:', answer: 8, max: 9, level: 2, display: '16 ÷ 2' },
+            { type: 'sum', num1: 48, num2: 51, max: 100, level: 2 }, // Repaso de suma
+            // MÁS CONTENIDO NIVEL 2
+            { type: 'times', num1: 4, num2: 5, question: '¿Cuánto es 4 x 5?', answer: 20, max: 21, level: 2, display: '4 grupos de 5' },
+            { type: 'divide', num1: 24, num2: 6, question: '24 dividido entre 6 es:', answer: 4, max: 5, level: 2, display: '24 ÷ 6' },
+            { type: 'area', length: 5, width: 2, question: '¿Cuál es el ÁREA de un rectángulo de 5x2?', answer: 10, max: 11, level: 2, display: 'Lados: 5 y 2' },
+            { type: 'times', num1: 6, num2: 3, question: '¿Cuánto es 6 x 3?', answer: 18, max: 19, level: 2, display: '6 grupos de 3' },
+            { type: 'divide', num1: 25, num2: 5, question: '25 dividido entre 5 es:', answer: 5, max: 6, level: 2, display: '25 ÷ 5' },
+            { type: 'area', length: 4, width: 4, question: '¿Cuál es el ÁREA de un cuadrado de 4x4?', answer: 16, max: 17, level: 2, display: 'Lados: 4 y 4' },
+            { type: 'perimeter', sides: [10, 5, 10, 5], question: '¿Cuál es el PERÍMETRO de un rectángulo 10 y 5?', answer: 30, max: 31, level: 2, display: 'Lados: 10, 5, 10, 5' },
+            { type: 'times', num1: 7, num2: 2, question: '¿Cuánto es 7 x 2?', answer: 14, max: 15, level: 2, display: '7 grupos de 2' },
+            { type: 'divide', num1: 18, num2: 3, question: '18 dividido entre 3 es:', answer: 6, max: 7, level: 2, display: '18 ÷ 3' },
+            { type: 'perimeter', sides: [8, 8, 8], question: '¿Cuál es el PERÍMETRO de un triángulo de lado 8?', answer: 24, max: 25, level: 2, display: 'Lados: 8, 8, 8' },
+            // EXPANSION NIVEL 2
+            { type: 'times', num1: 4, num2: 8, question: '¿Cuánto es 4 x 8?', answer: 32, max: 33, level: 2, display: 'Tabla del 4' },
+            { type: 'divide', num1: 35, num2: 5, question: '35 dividido entre 5 es:', answer: 7, max: 8, level: 2, display: '35 ÷ 5' },
+            { type: 'area', length: 6, width: 3, question: '¿Cuál es el ÁREA de un rectángulo de 6x3?', answer: 18, max: 19, level: 2, display: 'Lados: 6 y 3' },
+            { type: 'times', num1: 3, num2: 7, question: '¿Cuánto es 3 x 7?', answer: 21, max: 22, level: 2, display: 'Tabla del 3' },
+            { type: 'divide', num1: 40, num2: 4, question: '40 dividido entre 4 es:', answer: 10, max: 11, level: 2, display: '40 ÷ 4' },
+            { type: 'perimeter', sides: [9, 9, 9, 9], question: '¿Cuál es el PERÍMETRO de un cuadrado de lado 9?', answer: 36, max: 37, level: 2, display: 'Lados: 9, 9, 9, 9' },
+            { type: 'area', length: 7, width: 1, question: '¿Cuál es el ÁREA de un rectángulo de 7x1?', answer: 7, max: 8, level: 2, display: 'Lados: 7 y 1' },
+            { type: 'times', num1: 6, num2: 4, question: '¿Cuánto es 6 x 4?', answer: 24, max: 25, level: 2, display: 'Tabla del 6' },
+            { type: 'divide', num1: 36, num2: 6, question: '36 dividido entre 6 es:', answer: 6, max: 7, level: 2, display: '36 ÷ 6' },
+
+
+            // Nivel 3: Fracciones (1/2, 1/4), Geometría, Ordenar hasta 1000
+            { type: 'fraction', amount: 12, unit: 'manzanas', fraction: 2, question: '¿Cuánto es la MITAD (1/2) de 12?', answer: 6, max: 7, level: 3, display: '1/2 de 12' },
+            { type: 'fraction', amount: 8, unit: 'galletas', fraction: 4, question: '¿Cuánto es UN CUARTO (1/4) de 8?', answer: 2, max: 3, level: 3, display: '1/4 de 8' },
+            { type: 'geometry', shape: 'Triángulo', element: 'lados', answer: 3, options: [3, 4, 5], level: 3, question: '¿Cuántos LADOS tiene un Triángulo?' },
+            { type: 'geometry', shape: 'Cuadrado', element: 'vértices', answer: 4, options: [3, 4, 5], level: 3, question: '¿Cuántos VÉRTICES tiene un Cuadrado?' },
+            { type: 'order', numbers: [345, 123, 789], question: '¿Cuál es el número MAYOR? 345, 123, 789', answer: 789, options: [345, 123, 789], level: 3 },
+            { type: 'order', numbers: [500, 250, 750], question: '¿Cuál es el número MENOR? 500, 250, 750', answer: 250, options: [500, 250, 750], level: 3 },
+            { type: 'times', num1: 5, num2: 9, question: '¿Cuánto es 5 x 9?', answer: 45, max: 46, level: 3, display: '5 grupos de 9' },
+            { type: 'divide', num1: 20, num2: 4, question: '20 dividido entre 4 es:', answer: 5, max: 6, level: 3, display: '20 ÷ 4' },
+            { type: 'fraction', amount: 20, unit: 'canicas', fraction: 4, question: '¿Cuánto es UN CUARTO (1/4) de 20?', answer: 5, max: 6, level: 3, display: '1/4 de 20' },
+            { type: 'geometry', shape: 'Círculo', element: 'lados', answer: 0, options: [0, 1, 4], level: 3, question: '¿Cuántos LADOS rectos tiene un Círculo?' },
+            { type: 'order', numbers: [999, 1000, 101], question: '¿Cuál es el número MENOR? 999, 1000, 101', answer: 101, options: [999, 1000, 101], level: 3 },
+            { type: 'value', number: 700, question: '¿Qué número es 7 Centenas?', answer: 700, options: [70, 700, 7], level: 3 },
+            // MÁS CONTENIDO NIVEL 3
+            { type: 'times', num1: 6, num2: 6, question: '¿Cuánto es 6 x 6?', answer: 36, max: 37, level: 3, display: '6 grupos de 6' },
+            { type: 'divide', num1: 30, num2: 5, question: '30 dividido entre 5 es:', answer: 6, max: 7, level: 3, display: '30 ÷ 5' },
+            { type: 'fraction', amount: 16, unit: 'pedazos', fraction: 2, question: '¿Cuánto es 1/2 de 16?', answer: 8, max: 9, level: 3, display: '1/2 de 16' },
+            { type: 'geometry', shape: 'Rombo', element: 'lados', answer: 4, options: [3, 4, 5], level: 3, question: '¿Cuántos LADOS tiene un Rombo?' },
+            { type: 'order', numbers: [105, 501, 150], question: '¿Cuál es el número MAYOR? 105, 501, 150', answer: 501, options: [105, 501, 150], level: 3 },
+            { type: 'value', number: 500, question: '¿Qué número es la mitad de 1000?', answer: 500, options: [50, 500, 5000], level: 3 },
+            { type: 'roman', question: '¿Qué número es V en números Romanos?', answer: 5, options: [1, 5, 10], level: 3, display: 'Número Romano V' },
+            { type: 'roman', question: '¿Qué número es X en números Romanos?', answer: 10, options: [1, 5, 10], level: 3, display: 'Número Romano X' },
+            { type: 'sum', num1: 150, num2: 250, question: '¿Cuánto es 150 + 250?', answer: 400, max: 450, level: 3 },
+            // EXPANSION NIVEL 3
+            { type: 'times', num1: 7, num2: 7, question: '¿Cuánto es 7 x 7?', answer: 49, max: 50, level: 3, display: 'Tabla del 7' },
+            { type: 'divide', num1: 49, num2: 7, question: '49 dividido entre 7 es:', answer: 7, max: 8, level: 3, display: '49 ÷ 7' },
+            { type: 'fraction', amount: 9, unit: 'trozos', fraction: 3, question: '¿Cuánto es UN TERCIO (1/3) de 9?', answer: 3, max: 4, level: 3, display: '1/3 de 9' },
+            { type: 'geometry', shape: 'Pentágono', element: 'lados', answer: 5, options: [4, 5, 6], level: 3, question: '¿Cuántos LADOS tiene un Pentágono?' },
+            { type: 'order', numbers: [888, 777, 999], question: '¿Cuál es el número MAYOR? 888, 777, 999', answer: 999, options: [888, 777, 999], level: 3 },
+            { type: 'roman', question: '¿Qué número es L en números Romanos?', answer: 50, options: [5, 10, 50], level: 3, display: 'Número Romano L' },
+            { type: 'area', length: 10, width: 5, question: '¿Cuál es el ÁREA de un rectángulo de 10x5?', answer: 50, max: 51, level: 3, display: 'Lados: 10 y 5' },
+            { type: 'times', num1: 8, num2: 8, question: '¿Cuánto es 8 x 8?', answer: 64, max: 65, level: 3, display: 'Tabla del 8' },
+        ];
+
+        // Lectura y Lenguaje: Gramática, Oraciones y Estructura
+        const READING_QUESTIONS = [
+            // Nivel 1: Identificación de partes de la oración (Sustantivo, Verbo, Adjetivo)
+            { question: "¿Qué palabra es el SUSTANTIVO (persona, animal o cosa) en la frase: 'El pájaro azul vuela'?", answer: 'PÁJARO', options: ['EL', 'AZUL', 'PÁJARO', 'VUELA'], level: 1 },
+            { question: "¿Qué palabra es el ADJETIVO (descripción) en la frase: 'El carro rojo es rápido'?", answer: 'ROJO', options: ['EL', 'CARRO', 'ROJO', 'RÁPIDO'], level: 1 },
+            { question: "¿Qué palabra es el VERBO (acción) en la frase: 'Mamá come la fruta'?", answer: 'COME', options: ['MAMÁ', 'COME', 'LA', 'FRUTA'], level: 1 },
+            { question: "¿Cuál es el SUJETO de la oración: 'Los niños construyen un fuerte'?", answer: 'LOS NIÑOS', options: ['CONSTRUYEN', 'UN FUERTE', 'LOS NIÑOS'], level: 1 },
+            { question: "¿Cuál es el PREDICADO de la oración: 'El sol brilla en el cielo'?", answer: 'BRILLA EN EL CIELO', options: ['EL SOL', 'EL CIELO', 'BRILLA EN EL CIELO'], level: 1 },
+            { question: "¿Qué palabra es un Sustantivo Propio (nombre de persona/lugar)?", answer: 'GUATEMALA', options: ['MESA', 'PAÍS', 'GUATEMALA'], level: 1 },
+            { question: "¿Qué es la raíz (parte principal) de 'CARPINTERO'?", answer: 'CARPINT', options: ['PERO', 'CARPINT', 'MESA'], level: 1 },
+            { question: "¿Qué palabra es un Adjetivo?", answer: 'DELICIOSO', options: ['COMER', 'PLATO', 'DELICIOSO'], level: 1 },
+            { question: "¿Qué palabra es el VERBO en la frase: 'Yo canto una canción'?", answer: 'CANTO', options: ['YO', 'CANTO', 'UNA', 'CANCIÓN'], level: 1 },
+            { question: "¿Qué palabra es el Sustantivo Común?", answer: 'PLAYA', options: ['PAULA', 'PLAYA', 'MÉXICO'], level: 1 },
+            { question: "¿Cuál es el Predicado en: 'Mi perro duerme todo el día'?", answer: 'DUERME TODO EL DÍA', options: ['MI PERRO', 'DUERME TODO EL DÍA', 'EL DÍA'], level: 1 },
+            { question: "¿Qué palabra es un Adjetivo (descripción)?", answer: 'FUERTE', options: ['NADAR', 'AGUA', 'FUERTE'], level: 1 },
+            // MÁS CONTENIDO NIVEL 1
+            { question: "¿Cuál es el Sustantivo Propio?", answer: 'MARÍA', options: ['AMIGA', 'MARÍA', 'MUJER'], level: 1 },
+            { question: "¿Qué palabra es el Sustantivo en 'La montaña alta'?", answer: 'MONTAÑA', options: ['LA', 'MONTAÑA', 'ALTA'], level: 1 },
+            { question: "¿Qué palabra es el Adjetivo en 'La niña inteligente'?", answer: 'INTELIGENTE', options: ['NIÑA', 'LA', 'INTELIGENTE'], level: 1 },
+            { question: "¿Cuál es el Verbo en 'El bebé llora mucho'?", answer: 'LLORA', options: ['BEBÉ', 'LLORA', 'MUCHO'], level: 1 },
+            { question: "¿Cuál es el SUJETO en: 'Mi abuela cocina galletas'?", answer: 'MI ABUELA', options: ['COCINA GALLETAS', 'MI ABUELA', 'GALLETAS'], level: 1 },
+            { question: "¿Qué palabra es la raíz de 'PESCA'?", answer: 'PESCA', options: ['PEZ', 'PESCADO', 'PESCA'], level: 1 },
+            { question: "¿Qué es la raíz de 'ZAPATO'?", answer: 'ZAPAT', options: ['ZAPATERO', 'ZAPAT', 'SUELA'], level: 1 },
+            // EXPANSION NIVEL 1
+            { question: "¿Cuál es el Adjetivo en la frase: 'La casa vieja'?", answer: 'VIEJA', options: ['CASA', 'LA', 'VIEJA'], level: 1 },
+            { question: "¿Qué palabra es un Sustantivo (cosa)?", answer: 'SILLA', options: ['SENTAR', 'GRANDE', 'SILLA'], level: 1 },
+            { question: "¿Cuál es el Verbo en: 'El perro salta la cuerda'?", answer: 'SALTA', options: ['PERRO', 'SALTA', 'CUERDA'], level: 1 },
+            { question: "¿Cuál es el Predicado en: 'Mi hermana dibuja un sol'?", answer: 'DIBUJA UN SOL', options: ['MI HERMANA', 'DIBUJA UN SOL', 'UN SOL'], level: 1 },
+            { question: "¿Qué palabra es un Sustantivo Común?", answer: 'PAÍS', options: ['FRANCIA', 'PAÍS', 'PARÍS'], level: 1 },
+
+            // Nivel 2: Pronombres, Adverbios, Conectores, Uso de Puntuación
+            { question: "¿Qué palabra es un PRONOMBRE (ej. yo, tú, él)?", answer: 'NOSOTROS', options: ['LIBRO', 'CORRER', 'NOSOTROS'], level: 2 },
+            { question: "¿Qué palabra es un ADVERBIO de LUGAR (ej. aquí, allí)?", answer: 'ALLÍ', options: ['RÁPIDO', 'ALLÍ', 'MAÑANA'], level: 2 },
+            { question: "¿Qué palabra es un ADVERBIO de TIEMPO (ej. hoy, mañana)?", answer: 'HOY', options: ['LEJOS', 'HOY', 'LENTO'], level: 2 },
+            { question: "Selecciona una palabra para CONECTAR (ej. y, o): 'Compré pan ... queso'", answer: 'Y', options: ['PERO', 'Y', 'LUEGO'], level: 2 },
+            { question: "¿Qué palabra debe empezar con MAYÚSCULA?", answer: 'NOMBRE PROPIO', options: ['VERBO', 'ADJETIVO', 'NOMBRE PROPIO'], level: 2 },
+            { question: "¿Qué tipo de palabra es 'LENTAMENTE'?", answer: 'ADVERBIO', options: ['VERBO', 'SUSTANTIVO', 'ADVERBIO'], level: 2 },
+            { question: "¿Cuál es el PRONOMBRE de la oración: 'Ellos cantan bien'?", answer: 'ELLOS', options: ['CANTAN', 'BIEN', 'ELLOS'], level: 2 },
+            { question: "La ORACIÓN COMPLETA es:", answer: 'EL BEBÉ RÍE', options: ['RÍE MUCHO', 'EL BEBÉ RÍE', 'RISA FUERTE'], level: 2 },
+            { question: "¿Qué palabra usamos para señalar (Demostrativo)?", answer: 'ESTE', options: ['JUGAR', 'GRANDE', 'ESTE'], level: 2 },
+            { question: "¿Qué es un Adverbio de MODO (ej. bien, mal)?", answer: 'RÁPIDAMENTE', options: ['AYER', 'RÁPIDAMENTE', 'ALLÁ'], level: 2 },
+            { question: "¿Qué marca el final de una oración declarativa?", answer: 'PUNTO FINAL', options: ['COMA', 'PUNTO FINAL', 'SIGNOS'], level: 2 },
+            { question: "Selecciona el Adverbio de Cantidad.", answer: 'MUCHO', options: ['MAÑANA', 'MUCHO', 'CERCA'], level: 2 },
+            // MÁS CONTENIDO NIVEL 2
+            { question: "¿Qué palabra es una PREPOSICIÓN (ej. a, de, con)?", answer: 'CON', options: ['YO', 'CON', 'BONITO'], level: 2 },
+            { question: "Selecciona el Adverbio de LUGAR.", answer: 'ENCIMA', options: ['AYER', 'ENCIMA', 'RÁPIDO'], level: 2 },
+            { question: "¿Qué palabra usamos para UNIR dos ideas (Conjunción)?", answer: 'NI', options: ['SI', 'NI', 'DURANTE'], level: 2 },
+            { question: "¿Cuál es el PRONOMBRE en la frase: 'Ella lee un libro'?", answer: 'ELLA', options: ['ELLA', 'LEE', 'LIBRO'], level: 2 },
+            { question: "Selecciona el Adverbio de DUDA.", answer: 'QUIZÁS', options: ['NUNCA', 'SÍ', 'QUIZÁS'], level: 2 },
+            { question: "¿Qué palabra describe una acción (Verboide)?", answer: 'CORRIENDO', options: ['CORRIENDO', 'CORRE', 'CORRERÁ'], level: 2 },
+            { question: "¿Qué tipo de palabra es 'DEBAJO'?", answer: 'ADVERBIO DE LUGAR', options: ['VERBO', 'SUSTANTIVO', 'ADVERBIO DE LUGAR'], level: 2 },
+            { question: "Completa con un Adverbio de Cantidad: 'Hay ... flores'", answer: 'BASTANTES', options: ['AYER', 'BASTANTES', 'ALLÁ'], level: 2 },
+            // EXPANSION NIVEL 2
+            { question: "¿Qué tipo de palabra es 'AQUEL'?", answer: 'DEMOSTRATIVO', options: ['PRONOMBRE', 'ADVERBIO', 'DEMOSTRATIVO'], level: 2 },
+            { question: "¿Qué palabra es un ADVERBIO de NEGACIÓN?", answer: 'NUNCA', options: ['CASI', 'NUNCA', 'SÍ'], level: 2 },
+            { question: "Selecciona el Conector de OPOSICIÓN.", answer: 'SIN EMBARGO', options: ['ADEMÁS', 'SIN EMBARGO', 'LUEGO'], level: 2 },
+            { question: "¿Qué parte de la oración es 'mi mochila azul' en 'Vi mi mochila azul'?", answer: 'COMPLEMENTO DIRECTO', options: ['SUJETO', 'COMPLEMENTO DIRECTO', 'ADVERBIO'], level: 2 },
+            { question: "¿Qué palabra es un ARTÍCULO determinado?", answer: 'LA', options: ['UN', 'ALGÚN', 'LA'], level: 2 },
+
+
+            // Nivel 3: Tiempos Verbales (Pasado, Presente, Futuro), Ideas Principales
+            { question: "El verbo 'COMER' en TIEMPO PASADO es:", answer: 'COMIÓ', options: ['COMERÁ', 'COME', 'COMIÓ'], level: 3 },
+            { question: "El verbo 'JUGAR' en TIEMPO FUTURO es:", answer: 'JUGARÁ', options: ['JUGÓ', 'JUGARÁ', 'JUEGA'], level: 3 },
+            { question: "El verbo 'ESCRIBIR' en TIEMPO PRESENTE es:", answer: 'ESCRIBE', options: ['ESCRIBIÓ', 'ESCRIBE', 'ESCRIBIRÁ'], level: 3 },
+            { question: "¿Qué indica la IDEA PRINCIPAL de un texto?", answer: 'DE QUÉ TRATA', options: ['EL COLOR', 'DE QUÉ TRATA', 'EL AUTOR'], level: 3 },
+            { question: "Ordena: 'perro / El / rápido / corre'", answer: 'EL PERRO CORRE RÁPIDO', options: ['CORRE RÁPIDO EL PERRO', 'EL PERRO CORRE RÁPIDO', 'RÁPIDO CORRE EL PERRO'], level: 3 },
+            { question: "¿Cuál es la forma correcta de usar la COMA?", answer: 'PARA SEPARAR ELEMENTOS', options: ['PARA ACABAR', 'PARA GRITAR', 'PARA SEPARAR ELEMENTOS'], level: 3 },
+            { question: "¿Qué es una CONJUNCIÓN (une palabras/ideas)?", answer: 'PERO', options: ['RÍO', 'ALTO', 'PERO'], level: 3 },
+            { question: "La idea principal de: 'Los mayas crearon el calendario y las pirámides'", answer: 'LOS MAYAS ERAN INTELIGENTES', options: ['CREARON PIRÁMIDES', 'LOS MAYAS ERAN INTELIGENTES', 'HACÍAN CALENDARIOS'], level: 3 },
+            { question: "El verbo 'SALTAR' en FUTURO es:", answer: 'SALTARÁ', options: ['SALTÓ', 'SALTARÁ', 'SALTA'], level: 3 },
+            { question: "¿Qué tipo de palabra es 'HASTA' (preposición)?", answer: 'CONECTOR', options: ['ADJETIVO', 'CONECTOR', 'VERBO'], level: 3 },
+            { question: "Ordena: 'la / mesa / limpia / María'", answer: 'MARÍA LIMPIA LA MESA', options: ['MARÍA LIMPIA LA MESA', 'LA MESA MARÍA LIMPIA', 'LIMPIA MARÍA LA MESA'], level: 3 },
+            { question: "¿Qué debes usar después de una lista (ej. Manzana, Pera...)?", answer: 'COMA', options: ['PUNTO', 'COMA', 'SIGNO DE EXCLAMACIÓN'], level: 3 },
+            // MÁS CONTENIDO NIVEL 3
+            { question: "El verbo 'DORMIR' en TIEMPO PRESENTE es:", answer: 'DUERME', options: ['DORMIRÁ', 'DURMIÓ', 'DUERME'], level: 3 },
+            { question: "El verbo 'VIAJAR' en TIEMPO PASADO es:", answer: 'VIAJÓ', options: ['VIAJARÁ', 'VIAJÓ', 'VIAJA'], level: 3 },
+            { question: "¿Cuál es el sujeto de la oración: 'En el patio, la niña salta'?", answer: 'LA NIÑA', options: ['EN EL PATIO', 'LA NIÑA', 'SALTA'], level: 3 },
+            { question: "¿Qué es un VERBOIDE?", answer: 'VERBO SIN CONJUGAR', options: ['VERBO EN PASADO', 'VERBO SIN CONJUGAR', 'VERBO EN FUTURO'], level: 3 },
+            { question: "Selecciona la oración que está en TIEMPO FUTURO.", answer: 'MAÑANA LLOVERÁ', options: ['AYER LLOVIÓ', 'MAÑANA LLOVERÁ', 'HOY LLUEVE'], level: 3 },
+            { question: "¿Qué es un ADJETIVO CALIFICATIVO?", answer: 'DA UNA CUALIDAD', options: ['DA UNA ACCIÓN', 'DA UNA CANTIDAD', 'DA UNA CUALIDAD'], level: 3 },
+            { question: "Ordena: 'pelota / juega / con / El niño'", answer: 'EL NIÑO JUEGA CON LA PELOTA', options: ['JUEGA CON LA PELOTA EL NIÑO', 'LA PELOTA JUEGA CON EL NIÑO', 'EL NIÑO JUEGA CON LA PELOTA'], level: 3 },
+            { question: "¿Qué tipo de oración es: '¡Qué hermosa flor!'", answer: 'EXCLAMATIVA', options: ['INTERROGATIVA', 'DECLARATIVA', 'EXCLAMATIVA'], level: 3 },
+            // EXPANSION NIVEL 3
+            { question: "¿Qué es el DISCURSO DIRECTO?", answer: 'CITAR LAS PALABRAS EXACTAS', options: ['CONTAR LO QUE DIJO OTRO', 'CITAR LAS PALABRAS EXACTAS', 'ESCRIBIR UN CUENTO'], level: 3 },
+            { question: "¿Qué palabra es una INTERJECCIÓN (expresión de ánimo)?", answer: '¡AY!', options: ['PERO', 'RÁPIDO', '¡AY!'], level: 3 },
+            { question: "Completa la preposición: 'Vamos ... el parque'", answer: 'AL', options: ['DE', 'CON', 'AL'], level: 3 },
+            { question: "¿Qué significa el sufijo '-EZA'?", answer: 'CUALIDAD', options: ['PROFESIÓN', 'LUGAR', 'CUALIDAD'], level: 3 },
+            { question: "Selecciona el modo IMPERATIVO (dar una orden).", answer: 'CIERRA LA PUERTA', options: ['LA PUERTA ESTÁ CERRADA', 'CIERRA LA PUERTA', '¿CIERRA LA PUERTA?'], level: 3 },
+            { question: "¿Cómo se llama el bebé de la oveja?", answer: 'CORDERO', options: ['TERNERO', 'CABRITO', 'CORDERO'], level: 3 },
+        ];
+
+        // Ciencias Sociales: Geografía, Historia, Biología (Sistemas)
+        const SOCIAL_QUESTIONS = [
+            // Nivel 1: Geografía y Ciclos
+            { question: "¿Cuántos CONTINENTES hay en la Tierra?", answer: 'CINCO (O MÁS)', options: ['TRES', 'CINCO (O MÁS)', 'DIEZ'], level: 1 },
+            { question: "¿En qué HEMISFERIO (mitad) vivimos?", answer: 'NORTE O SUR', options: ['ESTE', 'NORTE O SUR', 'OESTE'], level: 1 }, // Simplificado por no saber la ubicación
+            { question: "¿Cuál es el OCÉANO más grande?", answer: 'PACÍFICO', options: ['ATLÁNTICO', 'ÍNDICO', 'PACÍFICO'], level: 1 },
+            { question: "¿Cuál es el punto cardinal OPUESTO al Norte?", answer: 'SUR', options: ['ESTE', 'OESTE', 'SUR'], level: 1 },
+            { question: "¿Qué CONTINENTE tiene a China y Japón?", answer: 'ASIA', options: ['EUROPA', 'ÁFRICA', 'ASIA'], level: 1 },
+            { question: "¿Cuál es el planeta más cercano al Sol?", answer: 'MERCURIO', options: ['MARTE', 'MERCURIO', 'VENUS'], level: 1 },
+            { question: "¿Qué parte de la planta ABSORBE agua y nutrientes?", answer: 'RAÍZ', options: ['HOJA', 'TALLO', 'RAÍZ'], level: 1 },
+            { question: "¿Cuál es el país más grande de América del Sur?", answer: 'BRASIL', options: ['CHILE', 'BRASIL', 'PERÚ'], level: 1 },
+            { question: "¿Cuál es el principal productor en la Cadena Alimenticia?", answer: 'PLANTAS', options: ['ANIMALES', 'PLANTAS', 'SOL'], level: 1 },
+            { question: "¿Qué es un HUESO?", answer: 'PARTE DURA DEL ESQUELETO', options: ['ÓRGANO BLANDO', 'PARTE DURA DEL ESQUELETO', 'PARTE DE LA PIEL'], level: 1 },
+            { question: "¿Qué capa de la Tierra nos protege del Sol?", answer: 'ATMÓSFERA', options: ['CORTEZA', 'ATMÓSFERA', 'MANTO'], level: 1 },
+            { question: "¿Cuál es el principal recurso de la Selva Maya?", answer: 'ÁRBOLES Y AGUA', options: ['PIEDRAS', 'ÁRBOLES Y AGUA', 'HIELO'], level: 1 },
+            // MÁS CONTENIDO NIVEL 1
+            { question: "¿Qué color se relaciona con el Norte en un mapa?", answer: 'AZUL', options: ['VERDE', 'ROJO', 'AZUL'], level: 1 },
+            { question: "¿Cuál es la bandera de Guatemala?", answer: 'AZUL Y BLANCO', options: ['ROJO Y AMARILLO', 'AZUL Y BLANCO', 'VERDE Y NEGRO'], level: 1 },
+            { question: "¿Cómo se llama el bebé del caballo?", answer: 'POTRO', options: ['TERNERO', 'POTRO', 'CABRITO'], level: 1 },
+            { question: "¿Qué es el Polo Norte?", answer: 'PUNTO FRÍO DEL NORTE', options: ['PUNTO CALIENTE', 'PUNTO FRÍO DEL NORTE', 'LÍNEA MEDIA'], level: 1 },
+            { question: "¿Qué es un Bosque Lluvioso?", answer: 'LUGAR CON MUCHA LLUVIA Y ÁRBOLES', options: ['LUGAR SECO', 'LUGAR CON MUCHA LLUVIA Y ÁRBOLES', 'LUGAR CON NIEVE'], level: 1 },
+            { question: "¿Cuál es la capital de México?", answer: 'CIUDAD DE MÉXICO', options: ['CANCÚN', 'CIUDAD DE MÉXICO', 'GUADALAJARA'], level: 1 },
+            // EXPANSION NIVEL 1
+            { question: "¿Cuál es la cordillera más larga del mundo?", answer: 'ANDES', options: ['ROCOSAS', 'ALPES', 'ANDES'], level: 1 },
+            { question: "¿Qué sucede en el ciclo del agua después de la condensación?", answer: 'PRECIPITACIÓN (LLUVIA)', options: ['EVAPORACIÓN', 'PRECIPITACIÓN (LLUVIA)', 'FILTRACIÓN'], level: 1 },
+            { question: "¿Cuál es el animal más grande del mundo?", answer: 'BALLENA AZUL', options: ['ELEFANTE', 'JIRAFA', 'BALLENA AZUL'], level: 1 },
+            { question: "¿Qué país es famoso por la Torre Eiffel?", answer: 'FRANCIA', options: ['ITALIA', 'FRANCIA', 'ALEMANIA'], level: 1 },
+            { question: "¿Qué tipo de energía es la luz del Sol?", answer: 'ENERGÍA SOLAR', options: ['ENERGÍA EÓLICA', 'ENERGÍA SOLAR', 'ENERGÍA ELÉCTRICA'], level: 1 },
+
+
+            // Nivel 2: Culturas, Reglas y Biología (Funciones)
+            { question: "¿Qué antigua civilización construyó Tikal y Copán?", answer: 'MAYAS', options: ['AZTECAS', 'ROMANOS', 'MAYAS'], level: 2 },
+            { question: "¿Quién fue el primer presidente de tu país?", answer: 'LÍDER FUNDADOR', options: ['REY', 'LÍDER FUNDADOR', 'MAYA CLÁSICO'], level: 2 }, // General
+            { question: "¿Cuál es la función del CORAZÓN? [Image of Corazón]", answer: 'BOMBEAR SANGRE', options: ['RESPIRAR', 'PENSAR', 'BOMBEAR SANGRE'], level: 2 },
+            { question: "¿Cuál es la función del ESTÓMAGO?", answer: 'DIGERIR ALIMENTOS', options: ['RESPIRAR', 'DIGERIR ALIMENTOS', 'HABLAR'], level: 2 },
+            { question: "¿Qué es un CONSUMIDOR PRIMARIO en la cadena alimenticia?", answer: 'HERBÍVORO', options: ['CARNÍVORO', 'PRODUCTOR', 'HERBÍVORO'], level: 2 },
+            { question: "¿Qué necesitas para RESPIRAR?", answer: 'PULMONES', options: ['RIÑONES', 'ESTÓMAGO', 'PULMONES'], level: 2 },
+            { question: "¿Cuál es una REGLA en la Biblioteca?", answer: 'HABLAR EN VOZ BAJA', options: ['GRITAR', 'CORRER', 'HABLAR EN VOZ BAJA'], level: 2 },
+            { question: "¿Qué civilización inventó los NÚMEROS ARÁBIGOS (0, 1, 2...)?", answer: 'ÁRABES/HINDÚES', options: ['ROMANOS', 'MAYAS', 'ÁRABES/HINDÚES'], level: 2 },
+            { question: "¿Cuál es la capital de Guatemala?", answer: 'CIUDAD DE GUATEMALA', options: ['ANTIGUA', 'FLORES', 'CIUDAD DE GUATEMALA'], level: 2 }, // Personalización
+            { question: "¿Cuál es el órgano principal del SISTEMA NERVIOSO?", answer: 'CEREBRO', options: ['CORAZÓN', 'CEREBRO', 'ESTÓMAGO'], level: 2 },
+            { question: "¿Qué invento revolucionó la comunicación escrita?", answer: 'LA IMPRENTA', options: ['RUEDA', 'FUEGO', 'LA IMPRENTA'], level: 2 },
+            { question: "¿Qué parte de la planta hace la FOTOSÍNTESIS?", answer: 'HOJAS', options: ['RAÍZ', 'TALLO', 'HOJAS'], level: 2 },
+            // MÁS CONTENIDO NIVEL 2
+            { question: "¿Qué civilización construyó las pirámides de Egipto?", answer: 'EGIPCIOS', options: ['MAYAS', 'ROMANOS', 'EGIPCIOS'], level: 2 },
+            { question: "¿Cuál es la función del HÍGADO?", answer: 'FILTRAR SUSTANCIAS DAÑINAS', options: ['BOMBEAR SANGRE', 'FILTRAR SUSTANCIAS DAÑINAS', 'OÍR SONIDOS'], level: 2 },
+            { question: "¿Qué es la Cadena Alimenticia?", answer: 'QUIÉN COME A QUIÉN', options: ['UNA CADENA DE METAL', 'QUIÉN COME A QUIÉN', 'UN JUEGO'], level: 2 },
+            { question: "¿Qué parte del cuerpo está protegida por la COLUMNA VERTEBRAL?", answer: 'MÉDULA ESPINAL', options: ['CEREBRO', 'MÉDULA ESPINAL', 'CORAZÓN'], level: 2 },
+            { question: "¿Qué es una LEY?", answer: 'UNA REGLA OBLIGATORIA', options: ['UN LIBRO', 'UNA REGLA OBLIGATORIA', 'UN LUGAR'], level: 2 },
+            { question: "¿Qué significa el color NARANJA en la bandera de India?", answer: 'VALOR', options: ['PAZ', 'VALOR', 'VERDAD'], level: 2 },
+            { question: "¿Qué fecha se celebra la Independencia de tu país?", answer: 'FECHA PATRIA', options: ['1 DE ENERO', 'NAVIDAD', 'FECHA PATRIA'], level: 2 },
+            { question: "¿Qué órgano te permite escuchar?", answer: 'OÍDO', options: ['OJO', 'NARIZ', 'OÍDO'], level: 2 },
+            // EXPANSION NIVEL 2
+            { question: "¿Cuál es la función de los MÚSCULOS?", answer: 'PERMITIR EL MOVIMIENTO', options: ['PENSAR', 'PERMITIR EL MOVIMIENTO', 'FILTRAR AGUA'], level: 2 },
+            { question: "¿Quién fue Cristóbal Colón?", answer: 'EXPLORADOR', options: ['REY', 'EXPLORADOR', 'GUERRERO'], level: 2 },
+            { question: "¿Qué es un HÉROE NACIONAL?", answer: 'PERSONA IMPORTANTE EN LA HISTORIA', options: ['UN ACTOR', 'PERSONA IMPORTANTE EN LA HISTORIA', 'UN BOMBERO'], level: 2 },
+            { question: "¿En qué CONTINENTE se encuentra el Río Nilo?", answer: 'ÁFRICA', options: ['ASIA', 'AMÉRICA', 'ÁFRICA'], level: 2 },
+            { question: "¿Cuál es el planeta que tiene anillos de hielo?", answer: 'SATURNO', options: ['MARTE', 'JÚPITER', 'SATURNO'], level: 2 },
+            { question: "¿Qué son los DERECHOS HUMANOS?", answer: 'REGLAS PARA TRATAR BIEN A TODOS', options: ['REGLAS DE TRÁFICO', 'REGLAS PARA TRATAR BIEN A TODOS', 'REGLAS ESCOLARES'], level: 2 },
+
+
+            // Nivel 3: Sistemas del Cuerpo, Historia Mundial, Geografía Avanzada
+            { question: "¿Cómo se llama el sistema que mueve los alimentos?", answer: 'SISTEMA DIGESTIVO', options: ['SISTEMA NERVIOSO', 'SISTEMA DIGESTIVO', 'SISTEMA RESPIRATORIO'], level: 3 },
+            { question: "¿Cómo se llama el sistema que lleva oxígeno al cuerpo?", answer: 'SISTEMA RESPIRATORIO', options: ['SISTEMA DIGESTIVO', 'SISTEMA RESPIRATORIO', 'SISTEMA ÓSEO'], level: 3 },
+            { question: "¿Cuál es el gas que necesitan las plantas para vivir?", answer: 'DIÓXIDO DE CARBONO', options: ['OXÍGENO', 'DIÓXIDO DE CARBONO', 'NITRÓGENO'], level: 3 },
+            { question: "¿Qué es el EQUINOCCIO?", answer: 'DÍA Y NOCHE IGUALES', options: ['DÍA CORTO', 'NOCHE CORTA', 'DÍA Y NOCHE IGUALES'], level: 3 },
+            { question: "¿Cuál es el animal CONSUMIDOR SECUNDARIO (come herbívoros)?", answer: 'LOBO', options: ['VACA', 'PLANTAS', 'LOBO'], level: 3 },
+            { question: "¿Qué son los NÚMEROS ROMANOS (ej. I, V, X)?", answer: 'SISTEMA ANTIGUO', options: ['NÚMEROS MAYAS', 'SISTEMA ANTIGUO', 'NÚMEROS MODERNOS'], level: 3 },
+            { question: "¿Qué necesitamos para tener energía y crecer?", answer: 'COMIDA SALUDABLE', options: ['DULCES', 'COMIDA SALUDABLE', 'GOLOSINAS'], level: 3 },
+            { question: "¿Qué es un MAPA FÍSICO?", answer: 'MUESTRA MONTAÑAS Y RÍOS', options: ['MUESTRA CIUDADES', 'MUESTRA MONTAÑAS Y RÍOS', 'MUESTRA GENTE'], level: 3 },
+            { question: "¿De qué planeta viene la Luna?", answer: 'TIERRA', options: ['SOL', 'MARTE', 'TIERRA'], level: 3 },
+            { question: "¿Qué es un HÁBITAT?", answer: 'EL LUGAR DONDE VIVE UN ANIMAL', options: ['UN JUEGO', 'EL LUGAR DONDE VIVE UN ANIMAL', 'UNA CASA'], level: 3 },
+            { question: "¿Qué forma tiene el planeta Tierra?", answer: 'GEOIDE', options: ['PLANA', 'CUADRADA', 'GEOIDE'], level: 3 },
+            { question: "¿Cuál es la función principal de los RIÑONES?", answer: 'FILTRAR LA SANGRE', options: ['PENSAR', 'FILTRAR LA SANGRE', 'RESPIRAR'], level: 3 },
+            // MÁS CONTENIDO NIVEL 3
+            { question: "¿Cómo se llama el sistema que protege y da forma al cuerpo?", answer: 'SISTEMA ESQUELÉTICO', options: ['MUSCULAR', 'ESQUELÉTICO', 'NERVIOSO'], level: 3 },
+            { question: "¿Qué sistema del cuerpo nos permite movernos?", answer: 'SISTEMA MUSCULAR', options: ['DIGESTIVO', 'MUSCULAR', 'ÓSEO'], level: 3 },
+            { question: "¿Qué es un ECOSISTEMA?", answer: 'RELACIÓN ENTRE SERES VIVOS Y SU AMBIENTE', options: ['UN LAGO', 'RELACIÓN ENTRE SERES VIVOS Y SU AMBIENTE', 'UN JUEGO'], level: 3 },
+            { question: "¿Cuál es el proceso donde el agua se convierte en vapor (sube al cielo)?", answer: 'EVAPORACIÓN', options: ['CONDENSACIÓN', 'EVAPORACIÓN', 'PRECIPITACIÓN'], level: 3 },
+            { question: "¿Qué animal es OMNÍVORO y fue domesticado por el hombre?", answer: 'PERRO', options: ['LOBO', 'PERRO', 'LEÓN'], level: 3 },
+            { question: "¿Qué civilización construyó el COLISEO Romano?", answer: 'ROMANOS', options: ['MAYAS', 'ROMANOS', 'GRIEGOS'], level: 3 },
+            { question: "¿Qué es un MAPA POLÍTICO?", answer: 'MUESTRA FRONTERAS Y CAPITALES', options: ['MUESTRA MONTAÑAS', 'MUESTRA FRONTERAS Y CAPITALES', 'MUESTRA RÍOS'], level: 3 },
+            { question: "¿Cuál es el planeta más grande del sistema solar?", answer: 'JÚPITER', options: ['MARTE', 'SATURNO', 'JÚPITER'], level: 3 },
+            { question: "¿Qué forma tiene la órbita de los planetas alrededor del Sol?", answer: 'ELÍPTICA (OVALADA)', options: ['CUADRADA', 'REDONDA', 'ELÍPTICA (OVALADA)'], level: 3 },
+            { question: "¿Qué órgano limpia la sangre del cuerpo?", answer: 'RIÑONES', options: ['ESTÓMAGO', 'RIÑONES', 'CEREBRO'], level: 3 },
+            { question: "¿Cómo se llama el cuerpo celeste que gira alrededor de un planeta?", answer: 'SATÉLITE', options: ['COMETA', 'ASTEROIDE', 'SATÉLITE'], level: 3 },
+            // EXPANSION NIVEL 3
+            { question: "¿Cuál es el desierto más grande del mundo?", answer: 'SAHARA', options: ['GOBY', 'SAHARA', 'ATACAMA'], level: 3 },
+            { question: "¿Qué es un GLACIAR?", answer: 'GRAN MASA DE HIELO', options: ['MONTAÑA DE FUEGO', 'GRAN MASA DE HIELO', 'RÍO SECO'], level: 3 },
+            { question: "¿Qué parte de tu cuerpo es más abundante (50-70%)?", answer: 'AGUA', options: ['HUESO', 'MÚSCULO', 'AGUA'], level: 3 },
+            { question: "¿Qué famoso explorador dio la primera vuelta al mundo?", answer: 'MAGALLANES', options: ['COLÓN', 'MAGALLANES', 'VESPUCIO'], level: 3 },
+            { question: "¿Qué gas respiramos para vivir?", answer: 'OXÍGENO', options: ['NITRÓGENO', 'DIÓXIDO DE CARBONO', 'OXÍGENO'], level: 3 },
+            { question: "¿Qué es una CONSTITUCIÓN?", answer: 'LEY MÁXIMA DE UN PAÍS', options: ['UN LIBRO DE CUENTOS', 'UNA BIBLIOTECA', 'LEY MÁXIMA DE UN PAÍS'], level: 3 },
+            { question: "¿Qué significa que un animal es DIURNO?", answer: 'ACTIVO DE DÍA', options: ['ACTIVO DE NOCHE', 'ACTIVO DE DÍA', 'ACTIVO SIEMPRE'], level: 3 },
+        ];
+        
+        // --- Funciones de Utilidad ---
+        
+        const shuffleArray = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        };
+
+        const generateFalseOption = (correctAnswer, max, existingOptions) => {
+            let option;
+            do {
+                // Genera un número entre 1 y max
+                option = Math.floor(Math.random() * max) + 1;
+            } while (option === correctAnswer || existingOptions.includes(option));
+            return option;
+        };
+
+        // --- Lógica de los Juegos (Generación de Preguntas) ---
+
+        function generateMathQuestion(level) {
+            const levelQuestions = MATH_QUESTIONS.filter(q => q.level === level);
+
+            if (levelQuestions.length === 0) return null;
+            // Selecciona una pregunta aleatoria
+            const q = levelQuestions[Math.floor(Math.random() * levelQuestions.length)];
+            
+            let correctAnswer, questionText, displayContent = '';
+            
+            if (q.type === 'count') {
+                correctAnswer = q.count;
+                questionText = `¡A contar! ¿Cuántas ${q.object.split(' ')[0]} ves?`;
+                const emoji = q.object.split(' ')[1] || '⭐';
+                // Genera el string de emojis
+                for (let i = 0; i < q.count; i++) {
+                    displayContent += emoji + ' ';
+                }
+            } else if (q.type === 'sum') {
+                correctAnswer = q.num1 + q.num2;
+                questionText = `¿Cuánto es ${q.num1} más ${q.num2}?`;
+                displayContent = `${q.num1} ➕ ${q.num2}`;
+            } else if (q.type === 'subtract') {
+                correctAnswer = q.num1 - q.num2;
+                questionText = `¿Cuánto es ${q.num1} menos ${q.num2}?`;
+                displayContent = `${q.num1} ➖ ${q.num2}`;
+            } else if (q.type === 'value') {
+                correctAnswer = q.answer;
+                questionText = q.question;
+                displayContent = `${q.number}`; // Muestra el número a analizar (ej. 23)
+            } else if (q.type === 'sequence' || q.type === 'comparison' || q.type === 'half' || q.type === 'order' || q.type === 'roman') {
+                correctAnswer = q.answer;
+                questionText = q.question;
+                // Muestra la parte relevante de la pregunta sin el signo de interrogación
+                displayContent = q.question.split('?')[0].includes(':') ? q.question.split(':')[1].trim() : q.question.split('?')[0].trim();
+            } else if (q.type === 'times') {
+                correctAnswer = q.num1 * q.num2;
+                questionText = q.question;
+                displayContent = q.display;
+            } else if (q.type === 'divide') {
+                correctAnswer = q.num1 / q.num2;
+                questionText = q.question;
+                displayContent = q.display;
+            } else if (q.type === 'perimeter') {
+                correctAnswer = q.sides.reduce((a, b) => a + b, 0);
+                questionText = q.question;
+                displayContent = q.display;
+            } else if (q.type === 'area') {
+                correctAnswer = q.length * q.width;
+                questionText = q.question;
+                displayContent = q.display;
+            } else if (q.type === 'fraction') {
+                correctAnswer = q.amount / q.fraction;
+                questionText = q.question;
+                displayContent = q.display;
+            } else if (q.type === 'geometry') {
+                 correctAnswer = q.answer;
+                questionText = q.question;
+                displayContent = q.shape;
+            }
+
+
+            // Manejo de opciones de respuesta
+            const options = [];
+            if (q.options) {
+                // Para preguntas con opciones predefinidas (secuencia, comparación, etc.)
+                options.push(...q.options);
+                // Asegurar que el correctAnswer siempre esté en las opciones (aunque q.options ya debería incluirlo)
+                if (!options.includes(correctAnswer)) options.push(correctAnswer);
+            } else {
+                // Para preguntas de cálculo y conteo (números)
+                options.push(correctAnswer);
+                const maxOption = q.max || 100;
+                while (options.length < 3) {
+                    // Asegurar que las opciones generadas sean distintas a la respuesta correcta y a las ya añadidas
+                    options.push(generateFalseOption(correctAnswer, maxOption, options));
+                }
+            }
+
+            gameData = {
+                type: 'math',
+                questionText: questionText,
+                displayContent: displayContent,
+                correctAnswer: correctAnswer,
+                options: shuffleArray(options)
+            };
+        }
+
+
+        function generateReadingQuestion(level) {
+            const levelQuestions = READING_QUESTIONS.filter(q => q.level === level);
+
+            if (levelQuestions.length === 0) return null;
+            const q = levelQuestions[Math.floor(Math.random() * levelQuestions.length)];
+            
+            // Defensivamente, asegurar que q.question es una cadena
+            const questionString = typeof q.question === 'string' ? q.question : '';
+
+            let displayContent = '';
+            if (q.display) {
+                displayContent = q.display;
+            } else {
+                // 1. Tomar la parte después del primer signo de interrogación de apertura (¿)
+                const parts = questionString.split('¿');
+                let coreText = parts.length > 1 ? parts[1] : questionString;
+
+                // 2. Eliminar el signo de interrogación de cierre (?) y el posible dos puntos (:)
+                coreText = coreText.split('?')[0].trim();
+                coreText = coreText.split(':')[0].trim();
+
+                displayContent = coreText;
+            }
+            
+            gameData = {
+                type: 'reading',
+                questionText: questionString,
+                // Muestra la palabra clave o la pregunta para evitar "undefined"
+                displayContent: displayContent, // Usamos la lógica de extracción defensiva
+                correctAnswer: q.answer,
+                options: shuffleArray(q.options)
+            };
+        }
+
+        function generateSocialQuestion(level) {
+            const levelQuestions = SOCIAL_QUESTIONS.filter(q => q.level === level);
+
+            if (levelQuestions.length === 0) return null;
+            const q = levelQuestions[Math.floor(Math.random() * levelQuestions.length)];
+
+            const questionString = typeof q.question === 'string' ? q.question : '';
+            
+            let displayContent = questionString;
+            
+            if (questionString.includes('?')) {
+                // Tomamos la parte antes del primer '?' y luego quitamos el posible ':'
+                displayContent = questionString.split('?')[0].trim();
+                displayContent = displayContent.split(':')[0].trim();
+            }
+            
+            gameData = {
+                type: 'social',
+                questionText: questionString,
+                // Muestra el emoji o la palabra clave
+                displayContent: displayContent, // Usamos la lógica de extracción defensiva
+                correctAnswer: q.answer,
+                options: shuffleArray(q.options)
+            };
+        }
+
+        // --- Manejo de la Respuesta y Transición ---
+
+        function checkAnswer(selectedOption, element) {
+            document.querySelectorAll('.option-tile').forEach(btn => btn.disabled = true);
+            
+            // Si la respuesta es un número, convierte la opción seleccionada a número para la comparación
+            if (typeof gameData.correctAnswer === 'number') {
+                selectedOption = parseInt(selectedOption);
+            }
+
+            const isCorrect = selectedOption == gameData.correctAnswer;
+            
+            // Muestra el feedback en la tarjeta principal
+            const mainCard = document.querySelector('.main-card');
+            const feedback = document.createElement('div');
+            feedback.textContent = isCorrect ? '¡CORRECTO! ✅' : '¡ERROR! ❌';
+            feedback.className = `feedback-message ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
+            mainCard.appendChild(feedback);
+
+            if (isCorrect) {
+                score += 10;
+                element.classList.add('correct-answer');
+                showMessage('¡RUNA ACTIVADA! 💎', '¡Has descifrado el glifo de la sabiduría!');
+                setTimeout(() => nextQuestion(), 2000);
+            } else {
+                element.classList.add('incorrect-answer');
+                document.querySelectorAll('.option-tile').forEach(btn => {
+                    // La comparación debe ser estricta para el texto, o basada en el valor convertido para números.
+                    const optionValue = (typeof gameData.correctAnswer === 'number') ? parseInt(btn.textContent.trim()) : btn.textContent.trim();
+                    if (optionValue == gameData.correctAnswer) {
+                        btn.classList.add('correct-answer');
+                    }
+                });
+                showMessage('¡VUELVE A INTENTARLO! 💪', `La respuesta era: ${gameData.correctAnswer}`);
+                setTimeout(() => nextQuestion(), 3000);
+            }
+        }
+
+        function showMessage(title, message) {
+            const messageBox = document.createElement('div');
+            messageBox.className = 'message-box';
+            messageBox.innerHTML = `
+                <div class="message-content">
+                    <div class="text-3xl mb-3">${title}</div>
+                    <div class="text-xl">${message}</div>
+                </div>
+            `;
+            document.body.appendChild(messageBox);
+            // El modal desaparece rápido, el feedback visual en el main-card permanece un poco más.
+            setTimeout(() => messageBox.remove(), 2000); 
+        }
+
+        function nextQuestion() {
+            // Elimina el mensaje de feedback antes de la transición
+            const feedback = document.querySelector('.feedback-message');
+            if (feedback) feedback.remove();
+
+            currentLevel++;
+            if (currentLevel > 3) {
+                // FIN del juego, vuelve al menú principal
+                window.renderScreen('mainMenu');
+            } else {
+                // Carga la siguiente pregunta del mismo tema
+                if (gameData.type === 'math') {
+                    generateMathQuestion(currentLevel);
+                    window.renderScreen('mathGame');
+                } else if (gameData.type === 'reading') {
+                    generateReadingQuestion(currentLevel);
+                    window.renderScreen('readingGame');
+                } else if (gameData.type === 'social') {
+                    generateSocialQuestion(currentLevel);
+                    window.renderScreen('socialGame');
+                }
+            }
+        }
+
+        // --- Funciones de Renderizado (UI) ---
+
+        function renderMainMenu() {
+            currentScreen = 'mainMenu';
+            currentLevel = 1;
+            // Usa una clave separada para la edición de 8 años
+            const maxScore = localStorage.getItem('kidIdolsMaxScore8') || 0; 
+            score = 0;
+            
+            app.innerHTML = `
+                <div class="main-card p-8 rounded-3xl text-center">
+                    <h1 class="title-main text-6xl mb-4 leading-tight">
+                        K-SABER MAYA<br>🏛️ GUARDIANES 🏛️
+                    </h1>
+                    <p class="text-3xl font-extrabold text-gray-700 mb-6 font-chivo">
+                         ¡EDICIÓN 8 AÑOS!
+                    </p>
+                    <p class="text-xl font-bold text-gray-700 mb-8">
+                        ¡Descubre los secretos de la Pirámide del Conocimiento!
+                    </p>
+
+                    <div class="space-y-4">
+                        <button onclick="startGame('math')" class="game-button btn-green-jungle w-full">
+                            🔢 CÁLCULO Y RUNAS
+                        </button>
+                        <button onclick="startGame('reading')" class="game-button btn-blue-deep w-full">
+                            📚 GLIFOS Y ORACIONES
+                        </button>
+                        <button onclick="startGame('social')" class="game-button btn-gold-sand w-full">
+                            💖 TEMPLOS Y MUNDO
+                        </button>
+                    </div>
+                    <div class="mt-8 p-4 bg-gray-100 rounded-xl text-lg font-bold text-gray-800 border-2 border-green-700">
+                         Puntuación Máxima: <span id="maxScore">${maxScore}</span> ⭐
+                    </div>
+                    
+                    <!-- REQUERIMIENTO DEL CLIENTE -->
+                    <div class="mt-6 text-center text-sm font-bold text-gray-700">
+                        <p>Creado y mantenido por **neuralcodelab.com**.</p>
+                        <p class="text-xs text-gray-500">Contáctanos para mejoras o nuevas funciones.</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('maxScore').textContent = maxScore;
+        }
+
+        function renderGameScreen() {
+            const gameTitle = {
+                'math': '🔢 SECRETO NUMÉRICO',
+                'reading': '📚 ARQUEÓLOGO DE PALABRAS',
+                'social': '💖 LEYENDAS Y MUNDO'
+            }[currentScreen];
+
+            app.innerHTML = `
+                <div class="main-card p-6 rounded-3xl text-center relative">
+                    <div class="flex justify-between items-center mb-6">
+                        <button onclick="renderScreen('mainMenu')" class="game-button btn-green-jungle py-2 px-4 text-base">
+                            🏠 MENÚ
+                        </button>
+                        <h2 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-700 to-blue-800 font-chivo">
+                            ${gameTitle}
+                        </h2>
+                        <div class="score-badge">⭐ ${score}</div>
+                    </div>
+                    
+                    <div class="level-badge mb-6">Nivel ${currentLevel} 🎯</div>
+                    
+                    <p class="text-2xl font-bold text-gray-700 mb-4">${gameData.questionText}</p>
+                    
+                    <div class="display-content">
+                        ${gameData.displayContent}
+                    </div>
+
+                    <div id="optionsContainer" class="grid grid-cols-2 gap-4">
+                        <!-- Opciones se inyectan aquí -->
+                    </div>
+                    
+                    <!-- REQUERIMIENTO DEL CLIENTE -->
+                    <div class="mt-6 text-center text-xs font-bold text-gray-500">
+                        App creada por neuralcodelab.com
+                    </div>
+                </div>
+            `;
+            renderOptions();
+        }
+
+        function renderOptions() {
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            gameData.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.className = 'option-tile';
+                button.onclick = (e) => checkAnswer(option, e.target);
+                optionsContainer.appendChild(button);
+            });
+        }
+        
+        // --- Control Principal Globalizado ---
+        
+        window.startGame = (gameType) => {
+            currentLevel = 1;
+            score = 0;
+            if (gameType === 'math') {
+                generateMathQuestion(currentLevel);
+                window.renderScreen('mathGame');
+            } else if (gameType === 'reading') {
+                generateReadingQuestion(currentLevel);
+                window.renderScreen('readingGame');
+            } else if (gameType === 'social') {
+                generateSocialQuestion(currentLevel);
+                window.renderScreen('socialGame');
+            }
+        };
+
+        window.renderScreen = (screenName) => {
+            currentScreen = screenName;
+            if (screenName === 'mainMenu') {
+                renderMainMenu();
+            } else if (screenName.endsWith('Game')) {
+                // Actualiza la puntuación máxima usando la clave K-IDOLS8
+                const maxScore = parseInt(localStorage.getItem('kidIdolsMaxScore8') || 0);
+                if (score > maxScore) {
+                    localStorage.setItem('kidIdolsMaxScore8', score);
+                }
+                renderGameScreen();
+            }
+        };
+        
+        // Inicio de la aplicación
+        document.addEventListener('DOMContentLoaded', () => {
+            window.renderScreen('mainMenu');
+        });
+        
+    </script>
+</body>
+</html>
