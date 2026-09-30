@@ -1,0 +1,14 @@
+// Sitio estático servido por Cloudflare Workers (migrado desde Netlify).
+// Deploy: npx wrangler deploy
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "k-idols8",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "k-idols8.neuralcodelab.com", "custom_domain": true }
+  ]
+}
